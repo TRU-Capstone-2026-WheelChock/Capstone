@@ -1,0 +1,5 @@
+services:
+  center:
+    build:
+      context: ./components/capstone-center
+      dockerfile: Dockerfile
