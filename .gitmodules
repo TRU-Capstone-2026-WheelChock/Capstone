@@ -1,0 +1,3 @@
+[submodule "components/capstone-center"]
+	path = components/capstone-center
+	url = git@github.com:KC45jp/capstone-center.git
