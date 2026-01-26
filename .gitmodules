@@ -1,3 +1,6 @@
 [submodule "components/capstone-center"]
 	path = components/capstone-center
 	url = git@github.com:KC45jp/capstone-center.git
+[submodule "components/capstone-thermal-sensor-component"]
+	path = components/capstone-thermal-sensor-component
+	url = git@github.com:TRU-Capstone-2026-WheelChock/capstone-thermal-sensor-component.git
