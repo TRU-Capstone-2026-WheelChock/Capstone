@@ -1,5 +1,10 @@
+include:
+  - path: ../../components/capstone-thermal-sensor-component/docker-compose.yml
+    env_file:
+      - ./dev_config/thermal.env
+
 services:
   center:
     build:
-      context: ./components/capstone-center
+      context: ../../components/capstone-center
       dockerfile: Dockerfile
