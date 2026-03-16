@@ -44,3 +44,18 @@ services:
       PUBLISH_INTERVAL_SEC: ${MOCK_SENSOR_PUBLISH_INTERVAL_SEC:-1.0}
     ports:
       - "${MOCK_SENSOR_2_HTTP_PORT:-8082}:8080"
+
+  mock-sensor-3:
+    build:
+      context: ../../components/mock-sensor
+      dockerfile: Dockerfile
+    depends_on:
+      - center
+    environment:
+      PORT: 8080
+      CENTER_ENDPOINT: ${MOCK_SENSOR_CENTER_ENDPOINT:-tcp://center:5555}
+      DEVICE_ID: ${MOCK_SENSOR_3_DEVICE_ID:-thermal-mock-001}
+      DEVICE_NAME: ${MOCK_SENSOR_3_DEVICE_NAME:-thermal-mock}
+      PUBLISH_INTERVAL_SEC: ${MOCK_SENSOR_PUBLISH_INTERVAL_SEC:-1.0}
+    ports:
+      - "${MOCK_SENSOR_3_HTTP_PORT:-8083}:8080"
