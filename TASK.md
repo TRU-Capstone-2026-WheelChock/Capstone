@@ -14,6 +14,9 @@ Goal:
 
 - Add a small Python entrypoint for local development that lets us toggle center override mode easily.
 - The intended user experience is to trigger override from the host with a simple command or `curl`.
+- Extend the `msg_handler` display message so it also carries the final center-side decision as `is_there_human`.
+- Because older flows may not have this final decision yet, `is_there_human` must allow `null`.
+- Update both `capstone-center` and `capstone-display` to publish and consume the extended display message shape.
 
 Suggested direction:
 
@@ -65,3 +68,34 @@ Acceptance criteria:
 - visual harness を使わなくても、開発者が override を ON/OFF できる。
 - 変更が現在の development Docker stack で動作する。
 - 使い方が development README に追記されている。
+
+### display message に最終判定を追加する
+
+背景:
+
+- 現在の `msg_handler` の display message には、sensor ごとの表示情報はあるが、center が最終的に下した判定である `is_there_human` が含まれていない。
+- このため、display 側で「各 sensor の値」と「最終判定」を明確に区別して扱えない。
+
+目的:
+
+- `msg_handler` の display message に、center の最終判定である `is_there_human` を追加する。
+- まだ最終判定を出せていないケースを表現できるように、`is_there_human` は `null` を許容する。
+
+進め方の候補:
+
+- `msg_handler` の display message schema に top-level の `is_there_human` を追加する。
+- `capstone-center` では、その時点の最終判定を display message に詰めて publish する。
+- `capstone-display` では、追加された `is_there_human` を受け取れるように追従する。
+
+期待する挙動:
+
+- center が最終判定を持っている場合、display message の `is_there_human` に `true` / `false` が入る。
+- center がまだ最終判定を持っていない場合、`is_there_human` は `null` になる。
+- 既存の `sensor_display_dict` は sensor ごとの表示情報として引き続き利用できる。
+
+完了条件:
+
+- `msg_handler` の display message に `is_there_human` が追加されている。
+- `is_there_human` が nullable な schema として扱われている。
+- `capstone-center` がその値を publish できる。
+- `capstone-display` がその値を受け取って扱える。
