@@ -1,0 +1,55 @@
+include:
+  - path: ../../components/capstone-center/docker-compose.yml
+    env_file:
+      - ./dev_config/center.env
+  - path: ../../components/capstone-motor-component/docker-compose.yml
+    env_file:
+      - ./dev_config/motor.env
+  - path: ../../components/capstone-display/docker-compose.yml
+    env_file:
+      - ./dev_config/display.env
+      - ./dev_config/ports.env
+  - path: ../../components/capstone-thermal-sensor-component/docker-compose.yml
+    env_file:
+      - ./dev_config/thermal.env
+      - ./dev_config/ports.env
+
+services:
+  publisher:
+    depends_on:
+      - center
+    environment:
+      CENTER_ENDPOINT: ${THERMAL_SENSOR_CENTER_ENDPOINT:-tcp://center:5555}
+      DEVICE_ID: ${THERMAL_SENSOR_DEVICE_ID:-thermal-dev-001}
+      DEVICE_NAME: ${THERMAL_SENSOR_DEVICE_NAME:-thermal-sensor}
+      PUBLISH_INTERVAL_SEC: ${THERMAL_SENSOR_PUBLISH_INTERVAL_SEC:-0.1}
+
+  mock-sensor-2:
+    build:
+      context: ../../components/mock-sensor
+      dockerfile: Dockerfile
+    depends_on:
+      - center
+    environment:
+      PORT: 8080
+      CENTER_ENDPOINT: ${MOCK_SENSOR_CENTER_ENDPOINT:-tcp://center:5555}
+      DEVICE_ID: ${MOCK_SENSOR_2_DEVICE_ID:-mock-sensor-002}
+      DEVICE_NAME: ${MOCK_SENSOR_2_DEVICE_NAME:-mock-sensor-2}
+      PUBLISH_INTERVAL_SEC: ${MOCK_SENSOR_PUBLISH_INTERVAL_SEC:-1.0}
+    ports:
+      - "${MOCK_SENSOR_2_HTTP_PORT:-18082}:8080"
+
+  mock-sensor-3:
+    build:
+      context: ../../components/mock-sensor
+      dockerfile: Dockerfile
+    depends_on:
+      - center
+    environment:
+      PORT: 8080
+      CENTER_ENDPOINT: ${MOCK_SENSOR_CENTER_ENDPOINT:-tcp://center:5555}
+      DEVICE_ID: ${MOCK_SENSOR_3_DEVICE_ID:-thermal-mock-001}
+      DEVICE_NAME: ${MOCK_SENSOR_3_DEVICE_NAME:-thermal-mock}
+      PUBLISH_INTERVAL_SEC: ${MOCK_SENSOR_PUBLISH_INTERVAL_SEC:-1.0}
+    ports:
+      - "${MOCK_SENSOR_3_HTTP_PORT:-18083}:8080"

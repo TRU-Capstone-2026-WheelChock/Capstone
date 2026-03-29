@@ -9,10 +9,6 @@ include:
     env_file:
       - ./dev_config/display.env
       - ./dev_config/ports.env
-  - path: ../../components/capstone-thermal-sensor-component/docker-compose.yml
-    env_file:
-      - ./dev_config/thermal.env
-      - ./dev_config/ports.env
 
 services:
   mock-sensor-1:
