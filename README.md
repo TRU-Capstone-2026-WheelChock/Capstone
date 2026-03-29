@@ -8,6 +8,7 @@ This repository manages the main project and the component repositories under `c
 - `components/capstone-display`
 - `components/capstone-motor-component`
 - `components/capstone-thermal-sensor-component`
+- `components/mock-override-button`
 - `components/mock-sensor`
 - `Docker/`
 - `test/`

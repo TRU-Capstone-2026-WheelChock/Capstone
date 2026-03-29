@@ -24,6 +24,21 @@ services:
       DEVICE_NAME: ${THERMAL_SENSOR_DEVICE_NAME:-thermal-sensor}
       PUBLISH_INTERVAL_SEC: ${THERMAL_SENSOR_PUBLISH_INTERVAL_SEC:-0.1}
 
+  mock-override-button:
+    build:
+      context: ../../components/mock-override-button
+      dockerfile: Dockerfile
+    depends_on:
+      - center
+    environment:
+      PORT: 8080
+      CENTER_ENDPOINT: ${MOCK_OVERRIDE_CENTER_ENDPOINT:-tcp://center:5555}
+      DEVICE_ID: ${MOCK_OVERRIDE_DEVICE_ID:-override-button-001}
+      DEVICE_NAME: ${MOCK_OVERRIDE_DEVICE_NAME:-mock-override-button}
+      PUBLISH_INTERVAL_SEC: ${MOCK_OVERRIDE_PUBLISH_INTERVAL_SEC:-1.0}
+    ports:
+      - "${MOCK_OVERRIDE_HTTP_PORT:-18084}:8080"
+
   mock-sensor-2:
     build:
       context: ../../components/mock-sensor

@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "mock-override-button"
+version = "0.1.0"
+description = "Mock override button for capstone system"
+authors = ["kmiya <miyak19@mytru.ca>"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+msg-handler = {git = "https://github.com/TRU-Capstone-2026-WheelChock/wheelchoke-system-communication-system.git"}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

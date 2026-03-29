@@ -9,6 +9,7 @@ It starts:
 - `center`
 - `motor` using `MockMotorController`
 - `display`
+- `mock-override-button`
 - `mock-sensor-1`
 - `mock-sensor-2`
 - `mock-sensor-3`
@@ -60,7 +61,7 @@ If you want to start `capstone-center` first and bring up the rest later:
 ```bash
 docker compose -f Docker/development/docker-compose.yml up -d center
 docker compose -f Docker/development/docker-compose.yml up -d \
-  motor display mock-sensor-1 mock-sensor-2 mock-sensor-3
+  motor display mock-override-button mock-sensor-1 mock-sensor-2 mock-sensor-3
 ```
 
 This matches the intended topology:
@@ -76,6 +77,7 @@ Default host ports:
 
 - display: `http://localhost:8080/`
 - display latest payload: `http://localhost:8080/state`
+- mock-override-button HTTP API: `http://localhost:18084/`
 - mock-sensor-1 HTTP API: `http://localhost:18081/`
 - mock-sensor-2 HTTP API: `http://localhost:18082/`
 - mock-sensor-3 HTTP API: `http://localhost:18083/`
@@ -84,9 +86,36 @@ Runtime component identities:
 
 - center sender id: `capstone-center`
 - motor component id: `motor-dev-001`
+- mock-override-button device id: `override-button-001`
 - mock-sensor-1 device id: `mock-sensor-001`
 - mock-sensor-2 device id: `mock-sensor-002`
 - mock-sensor-3 device id: `thermal-mock-001`
+
+## Override Control
+
+The override helper exposes a small HTTP API.
+
+Check the current override state:
+
+```bash
+curl http://localhost:18084/state
+```
+
+Enable override mode:
+
+```bash
+curl -X POST http://localhost:18084/override \
+  -H "Content-Type: application/json" \
+  -d '{"value": true}'
+```
+
+Disable override mode:
+
+```bash
+curl -X POST http://localhost:18084/override \
+  -H "Content-Type: application/json" \
+  -d '{"value": false}'
+```
 
 ## Mock Sensor Control
 
@@ -135,6 +164,7 @@ Use the matching port for each sensor:
 - `18081` for `mock-sensor-1`
 - `18082` for `mock-sensor-2`
 - `18083` for `mock-sensor-3`
+- `18084` for `mock-override-button`
 
 Example: make only sensor 2 detect a human:
 
@@ -150,7 +180,7 @@ Follow the main services:
 
 ```bash
 docker compose -f Docker/development/docker-compose.yml logs -f \
-  center motor display mock-sensor-1 mock-sensor-2 mock-sensor-3
+  center motor display mock-override-button mock-sensor-1 mock-sensor-2 mock-sensor-3
 ```
 
 Useful things to look for:
@@ -202,6 +232,7 @@ DISPLAY_HTTP_PORT=9080 \
 MOCK_SENSOR_1_HTTP_PORT=19081 \
 MOCK_SENSOR_2_HTTP_PORT=19082 \
 MOCK_SENSOR_3_HTTP_PORT=19083 \
+MOCK_OVERRIDE_HTTP_PORT=19084 \
 docker compose -f Docker/development/docker-compose.yml up -d
 ```
 

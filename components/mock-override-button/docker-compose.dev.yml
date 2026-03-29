@@ -1,0 +1,10 @@
+services:
+  mock-override-button:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - CENTER_ENDPOINT=tcp://host.docker.internal:5555
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
