@@ -63,8 +63,8 @@ services:
     environment:
       PORT: 8080
       CENTER_ENDPOINT: ${MOCK_SENSOR_CENTER_ENDPOINT:-tcp://center:5555}
-      DEVICE_ID: ${MOCK_SENSOR_3_DEVICE_ID:-thermal-mock-001}
-      DEVICE_NAME: ${MOCK_SENSOR_3_DEVICE_NAME:-thermal-mock}
+      DEVICE_ID: ${MOCK_SENSOR_3_DEVICE_ID:-mock-sensor-003}
+      DEVICE_NAME: ${MOCK_SENSOR_3_DEVICE_NAME:-mock-sensor-3}
       PUBLISH_INTERVAL_SEC: ${MOCK_SENSOR_PUBLISH_INTERVAL_SEC:-1.0}
     ports:
       - "${MOCK_SENSOR_3_HTTP_PORT:-18083}:8080"
